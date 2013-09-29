@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <p>
+    	Connected user:<hr>
+    	<ul id="users">
+    	</ul>
+    </p>
+
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+	    var socket = io.connect();
+	    
+	    socket.on('news', function (data) {
+	      console.log(data);
+	    });
+
+	    socket.emit('who', function(data) {
+	    	console.log(data);
+	    });
+
+	    socket.on('connected', function(data) {
+	    	//console.log(data);
+	    	$('li').remove();
+	    	for (k in data) {
+	    		$('ul').append('<li>' + k + ':' + data[k] + '</li>')
+	    	}
+	    });
+	</script>
+
+  </body>
+</html>
