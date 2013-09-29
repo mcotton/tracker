@@ -11,7 +11,6 @@ var RedisStore = require('socket.io/lib/stores/redis')
   , client = redis.createClient();
 
 
-
 var app = express();
 var server = http.createServer(app)
 
@@ -47,9 +46,27 @@ io.sockets.on('connection', function (socket) {
     socket.emit('connected', io.sockets.manager.connected)
     socket.broadcast.emit('connected', io.sockets.manager.connected )
   })
+
+  socket.on('ua', function(data) {
+    socket.set('id', socket.id)
+    socket.set('ua', data.ua)
+    client.sadd('userAgents', data.ua)
+  })
 });
 
 io.sockets.on('disconnect', function (socket) {
   socket.emit('connected', io.sockets.manager.connected)
   socket.broadcast.emit('connected', io.sockets.manager.connected )
 });
+
+
+
+
+
+
+
+
+
+
+
+
